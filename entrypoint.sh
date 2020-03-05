@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -eu
 
 # Set up .netrc file with GitHub credentials
@@ -22,8 +22,16 @@ EOF
 echo "Setting up git machine..."
 git_setup
 
+echo "Getting last tag..."
+last_tag=`git describe --tags $(git rev-list --tags --max-count=1)`
+echo "Last tag is ${last_tag}"
+
+echo "Getting next tag..."
+next_tag="${last_tag%.*}.$((${last_tag##*.}+1))"
+echo "Next tag will be ${next_tag}"
+
 echo "Forcing tag update..."
-git tag -a latest -m "$INPUT_DESCRIPTION" "${GITHUB_SHA}" -f
+git tag -a ${next_tag} "${GITHUB_SHA}" -f
 
 echo "Forcing tag push..."
 git push --tags -f
