@@ -1,0 +1,10 @@
+name: 'Create an incremental release'
+description: 'Create an incremental release'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+
+branding:
+  icon: 'tag'
+  color: 'blue'
