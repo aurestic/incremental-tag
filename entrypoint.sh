@@ -22,6 +22,9 @@ EOF
 echo "Setting up git machine..."
 git_setup
 
+echo "Updating repository tags..."
+git fetch --tags
+
 echo "Getting last tag..."
 last_tag=`git describe --tags $(git rev-list --tags --max-count=1)`
 echo "Last tag is ${last_tag}"
