@@ -3,6 +3,8 @@ set -eu
 
 # Set up .netrc file with GitHub credentials
 git_setup ( ) {
+  echo $GITHUB_ACTOR;
+  echo $GITHUB_TOKEN;
   cat <<- EOF > $HOME/.netrc
         machine github.com
         login $GITHUB_ACTOR
