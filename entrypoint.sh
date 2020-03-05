@@ -34,7 +34,7 @@ next_tag="${last_tag%.*}.$((${last_tag##*.}+1))"
 echo "Next tag will be ${next_tag}"
 
 echo "Forcing tag update..."
-git tag -a ${next_tag} "${GITHUB_SHA}" -f
+git tag -a ${next_tag} -m "Dump version" "${GITHUB_SHA}" -f
 
 echo "Forcing tag push..."
 git push --tags -f
