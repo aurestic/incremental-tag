@@ -3,8 +3,6 @@ set -eu
 
 # Set up .netrc file with GitHub credentials
 git_setup ( ) {
-  echo $GITHUB_ACTOR;
-  echo $GITHUB_TOKEN;
   cat <<- EOF > $HOME/.netrc
         machine github.com
         login $GITHUB_ACTOR
@@ -25,8 +23,12 @@ git_setup
 echo "Updating repository tags..."
 git fetch --tags
 
+echo "Getting version branch"
+branch=$(git rev-parse --abbrev-ref HEAD)
+echo "Current version"
+
 echo "Getting last tag..."
-last_tag=`git describe --tags $(git rev-list --tags --max-count=1)`
+last_tag=`git describe --tags $(git rev-list --tags) --always|egrep "v${branch}\.[0-9]\.[0-9]$"|head -n 1`
 echo "Last tag is ${last_tag}"
 
 echo "Getting next tag..."
