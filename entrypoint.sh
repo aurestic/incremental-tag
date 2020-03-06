@@ -31,6 +31,10 @@ echo "Getting last tag..."
 last_tag=`git describe --tags $(git rev-list --tags) --always|egrep "v${branch}\.[0-9]\.[0-9]$"|head -n 1`
 echo "Last tag is ${last_tag}"
 
+if [[ "${last_tag}" == "" ]];then
+    last_tag="v${branch}.0.0";
+fi
+
 echo "Getting next tag..."
 next_tag="${last_tag%.*}.$((${last_tag##*.}+1))"
 echo "Next tag will be ${next_tag}"
