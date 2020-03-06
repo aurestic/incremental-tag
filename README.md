@@ -19,21 +19,22 @@ These are the parameters you can use with the action:
 You can use a workflow like this:
 
 ```yaml
-name: Add latest tag to new release
+name: Tagging
+
 on:
   push:
-    branches: ['8.0', '9.0', '10.0', 11.0', 12.0', 13.0', 14.0', 15.0', 16.0']
+    branches: ['8.0', '9.0', '10.0', '11.0', '12.0', '13.0', '14.0', '15.0', '16.0']
 
-jobs: 
-  run:
+jobs:
+  build:
     name: Bump tag
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Create an incremental tag
-      uses: aurestic/incremental-create-tag@1.0.7
+    - name: Create an incremental release
+      uses: aurestic/incrementarl-create-release@1.0.8
       with:
         flag_branch: true
         message: Bump version
