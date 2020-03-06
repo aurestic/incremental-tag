@@ -1,5 +1,5 @@
-name: 'Create an incremental release'
-description: 'Create an incremental release'
+name: 'Create an incremental tag'
+description: 'Create an incremental tag under your conditions'
 
 runs:
   using: 'docker'
@@ -8,3 +8,17 @@ runs:
 branding:
   icon: 'tag'
   color: 'blue'
+
+inputs:
+  flag_branch:
+    description: 'Flag indicating that the script should look for the lastest tag depending on the branch to which the merge is made. That is, if we are in the branch "8.0" and a merge of a PR is made, it will take the last tag "8.0.15.45" and not "11.0.56.23".'
+    required: false
+    default: False
+  message:
+    description: 'Message for the tag'
+    required: false
+    default: 'Bump version'
+  prev_tag:
+    description: 'String to be added before the final tag, for example this parameter takes the value "v" the final tag will be "v8.0.15.45".'
+    required: false
+    default: ''
