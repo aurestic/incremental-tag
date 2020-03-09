@@ -60,7 +60,7 @@ if [[ ${INPUT_UPDATE_ODOO_MODULE_VERSION} ]];then
         new_version=`echo ${next_tag}|sed "s,^v\(.*\),\1,g"`
 
         echo "new_version: ${new_version}"
-        sed -i "s,\(\s*\"version\":\).*,\1 \"${new_version}\"\,,g" ${file}
+        sed -i "s,\(\s*.version.*:\).*,\1 \"${new_version}\"\,,g" ${file}
         git add ${file}
     done
     git commit -m "${INPUT_MESSAGE}"
