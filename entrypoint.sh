@@ -67,12 +67,13 @@ if [[ ${INPUT_UPDATE_ODOO_MODULE_VERSION} ]];then
 
     tag_commit=`git rev-parse --verify HEAD`
     echo "tag_commit: ${tag_commit}"
-    git tag -a ${next_tag} -m "${INPUT_MESSAGE}" "${tag_commit}" -f
-
+    git tag ${next_tag}
+    git push --tags
 else
     echo "Forcing tag update..."
     git tag -a ${next_tag} -m "${INPUT_MESSAGE}" "${GITHUB_SHA}" -f
+
+    echo "Forcing tag push..."
+    git push --tags -f
 fi
 
-echo "Forcing tag push..."
-git push --tags -f
