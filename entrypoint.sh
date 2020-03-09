@@ -30,7 +30,7 @@ if [[ $INPUT_FLAG_BRANCH ]];then
     echo "Branch ${branch}"
 
     echo "Getting last tag..."
-    last_tag=`git describe --tags $(git rev-list --tags) --always|egrep "${INPUT_PREV_TAG}${branch}\.[0-9]\.[0-9]$"|head -n 1`
+    last_tag=`git describe --tags $(git rev-list --tags) --always|egrep "v8.0\.[0-9]*\.[0-9]*$"|sort -V -r|head -n 1`
     echo "Last tag is ${last_tag}"
 else
     echo "Getting last tag..."
