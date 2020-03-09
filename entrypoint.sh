@@ -47,24 +47,24 @@ echo "Getting next tag..."
 next_tag="${last_tag%.*}.$((${last_tag##*.}+1))"
 echo "Next tag will be ${next_tag}"
 
-if [[ $INPUT_UPDATE_FILES ]];then
+if [[ "${INPUT_UPDATE_FILE}" -ne "" ]];then
     git checkout "${GITHUB_SHA}";
-fi
-for file in $INPUT_UPDATE_FILES;do
-    echo "Updating file version ${file}..."
+
+    echo "Updating file version ${INPUT_UPDATE_FILE}..."
     last_version=`echo ${last_tag}|sed "s,^v\(.*\),\1,g"`
     new_version=`echo ${next_tag}|sed "s,^v\(.*\),\1,g"`
 
     echo "last_version: ${last_version}"
     echo "new_version: ${new_version}"
-    sed -i 's,${last_version},${new_version},g' ${file}
+    sed -i 's,${last_version},${new_version},g' ${INPUT_UPDATE_FILE}
 
-    git add ${file}
-done
-if [[ $INPUT_UPDATE_FILES ]];then
+    git add ${INPUT_UPDATE_FILE}
+
     git commit -m "${INPUT_MESSAGE}"
     tag_commit=`git rev-parse --verify HEAD`
+    echo "tag_commit: ${tag_commit}"
     git tag -a ${next_tag} -m "${INPUT_MESSAGE}" "${tag_commit}" -f
+
 else
     echo "Forcing tag update..."
     git tag -a ${next_tag} -m "${INPUT_MESSAGE}" "${GITHUB_SHA}" -f

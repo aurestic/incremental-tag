@@ -22,7 +22,7 @@ inputs:
     description: 'String to be added before the final tag, for example this parameter takes the value "v" the final tag will be "v8.0.15.45".'
     required: false
     default: ''
-  update_files:
-    description: 'List of files to update new version. This options will be a commit.'
+  update_file:
+    description: 'Filename to update new version. This options will be a commit.'
     required: false
     default: ''

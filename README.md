@@ -13,7 +13,7 @@ These are the parameters you can use with the action:
 - `flag_branch`: [optional] Flag indicating that the script should look for the lastest tag depending on the branch to which the merge is made. That is, if we are in the branch '8.0' and a merge of a PR is made, it will take the last tag '8.0.15.45' and not '11.0.56.23'.
 - `message`: [optional] Message for the tag
 - `prev_tag`: [optional] String to be added before the final tag, for example this parameter takes the value 'v' the final tag will be 'v8.0.15.45'.
-- `update_files`: [optional] List of files to update new version. This options will be a commit.
+- `update_file`: [optional] Filename to update new version. This options will be a commit.
 
 ## Usage
 
@@ -24,7 +24,7 @@ name: Tagging
 
 on:
   push:
-    branches: ['8.0', '9.0', '10.0', '11.0', '12.0', '13.0', '14.0', '15.0', '16.0']
+    branches: '8.0'
 
 jobs:
   build:
@@ -40,7 +40,7 @@ jobs:
         flag_branch: true
         message: Bump version
         prev_tag: 'v'
-        update_files: ['__openerp__.py', '__manifest__.py']
+        update_file: '__openerp__.py'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
