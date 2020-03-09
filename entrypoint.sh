@@ -40,15 +40,35 @@ fi
 
 
 if [[ "${last_tag}" == "" ]];then
-    last_tag="v${branch}.0.0";
+    last_tag="${INPUT_PREV_TAG}${branch}.0.0";
 fi
 
 echo "Getting next tag..."
 next_tag="${last_tag%.*}.$((${last_tag##*.}+1))"
 echo "Next tag will be ${next_tag}"
 
-echo "Forcing tag update..."
-git tag -a ${next_tag} -m "${INPUT_MESSAGE}" "${GITHUB_SHA}" -f
+if [[ $INPUT_UPDATE_FILES ]];then
+    git checkout "${GITHUB_SHA}";
+fi
+for file in $INPUT_UPDATE_FILES;do
+    echo "Updating file version ${file}..."
+    last_version=`echo ${last_tag}|sed "s,^v\(.*\),\1,g"`
+    new_version=`echo ${next_tag}|sed "s,^v\(.*\),\1,g"`
+
+    echo "last_version: ${last_version}"
+    echo "new_version: ${new_version}"
+    sed -i 's,${last_version},${new_version},g' ${file}
+
+    git add ${file}
+done
+if [[ $INPUT_UPDATE_FILES ]];then
+    git commit -m "${INPUT_MESSAGE}"
+    tag_commit=`git rev-parse --verify HEAD`
+    git tag -a ${next_tag} -m "${INPUT_MESSAGE}" "${tag_commit}" -f
+else
+    echo "Forcing tag update..."
+    git tag -a ${next_tag} -m "${INPUT_MESSAGE}" "${GITHUB_SHA}" -f
+fi
 
 echo "Forcing tag push..."
 git push --tags -f
