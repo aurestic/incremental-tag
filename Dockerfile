@@ -9,6 +9,8 @@ LABEL "repository"="https://github.com/aurestic/incremental-tag"
 LABEL "homepage"="https://github.com/aurestic/incremental-tag"
 LABEL "maintainer"="Jose Zambudio <zamberjo@gmail.com>"
 
+RUN apk add coreutils
+
 COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["sh", "/entrypoint.sh"]
