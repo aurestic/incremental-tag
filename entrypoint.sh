@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -eu
 
 # Set up .netrc file with GitHub credentials
@@ -51,8 +51,7 @@ if [[ ${INPUT_UPDATE_ODOO_MODULE_VERSION} ]];then
     echo "GITHUB_SHA: ${GITHUB_SHA}"
     git checkout "${GITHUB_SHA}";
 
-    manifest_files=('__openerp__.py' '__manifest__.py')
-    for file in ${manifest_files};do
+    for file in '__openerp__.py' '__manifest__.py';do
         echo "Updating file version ${file}..."
         new_version=`echo ${next_tag}|sed "s,^v\(.*\),\1,g"`
 
