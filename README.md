@@ -13,8 +13,7 @@ These are the parameters you can use with the action:
 - `flag_branch`: [optional] Flag indicating that the script should look for the lastest tag depending on the branch to which the merge is made. That is, if we are in the branch '8.0' and a merge of a PR is made, it will take the last tag '8.0.15.45' and not '11.0.56.23'.
 - `message`: [optional] Message for the tag
 - `prev_tag`: [optional] String to be added before the final tag, for example this parameter takes the value 'v' the final tag will be 'v8.0.15.45'.
-- `update_file`: [optional] Filename to update new version. This options will be a commit.
-- `update_sed_regex`: [optional] Regex to update <<update_file>> version.
+- `update_odoo_module_version`: [optional] Flag that indicates that these repository is an odoo module, so this actions will update a manifest file.
 
 ## Usage
 
@@ -41,8 +40,7 @@ jobs:
         flag_branch: true
         message: Bump version
         prev_tag: 'v'
-        update_file: '__openerp__.py'
-        update_sed_regex: '__openerp__.py'
+        update_odoo_module_version: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```

@@ -13,7 +13,7 @@ inputs:
   flag_branch:
     description: 'Flag indicating that the script should look for the lastest tag depending on the branch to which the merge is made. That is, if we are in the branch "8.0" and a merge of a PR is made, it will take the last tag "8.0.15.45" and not "11.0.56.23".'
     required: false
-    default: False
+    default: false
   message:
     description: 'Message for the tag'
     required: false
@@ -22,11 +22,7 @@ inputs:
     description: 'String to be added before the final tag, for example this parameter takes the value "v" the final tag will be "v8.0.15.45".'
     required: false
     default: ''
-  update_file:
-    description: 'Filename to update new version. This options will be a commit.'
+  update_odoo_module_version:
+    description: 'Flag that indicates that these repository is an odoo module, so this actions will update a manifest file.'
     required: false
-    default: ''
-  update_sed_regex:
-    description: 'Regex to update <<update_file>> version.'
-    required: false
-    default: ''
+    default: false

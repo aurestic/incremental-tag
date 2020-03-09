@@ -14,7 +14,7 @@ EOF
     chmod 600 $HOME/.netrc
 
     git config --global user.email "actions@github.com"
-    git config --global user.name "Latest tag GitHub Action"
+    git config --global user.name "Incremental tag GitHub Action"
 }
 
 echo "Setting up git machine..."
@@ -47,23 +47,18 @@ echo "Getting next tag..."
 next_tag="${last_tag%.*}.$((${last_tag##*.}+1))"
 echo "Next tag will be ${next_tag}"
 
-if [[ "${INPUT_UPDATE_FILE}" -ne "" ]];then
+if [[ ${INPUT_UPDATE_ODOO_MODULE_VERSION} ]];then
     echo "GITHUB_SHA: ${GITHUB_SHA}"
     git checkout "${GITHUB_SHA}";
 
-    echo "Updating file version ${INPUT_UPDATE_FILE}..."
-    last_version=`echo ${last_tag}|sed "s,^v\(.*\),\1,g"`
-    new_version=`echo ${next_tag}|sed "s,^v\(.*\),\1,g"`
+    for file in ('__openerp__.py' '__manifest__.py');do
+        echo "Updating file version ${file}..."
+        new_version=`echo ${next_tag}|sed "s,^v\(.*\),\1,g"`
 
-    echo "last_version: ${last_version}"
-    echo "new_version: ${new_version}"
-    if [[ "${INPUT_UPDATE_SED_REGEX}" -eq "" ]];then
-        sed -i 's,${last_version},${new_version},g' ${INPUT_UPDATE_FILE}
-    else
-        echo "INPUT_UPDATE_SED_REGEX: ${INPUT_UPDATE_SED_REGEX}";
-        sed -i "${INPUT_UPDATE_SED_REGEX}" __openerp__.py
-    fi
-    git add ${INPUT_UPDATE_FILE}
+        echo "new_version: ${new_version}"
+        sed -i "s,\(\s*\"version\":\).*,\1 \"${new_version}\"\,,g" ${file}
+        git add ${file}
+    done
     git commit -m "${INPUT_MESSAGE}"
 
     tag_commit=`git rev-parse --verify HEAD`
