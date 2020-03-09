@@ -48,6 +48,7 @@ next_tag="${last_tag%.*}.$((${last_tag##*.}+1))"
 echo "Next tag will be ${next_tag}"
 
 if [[ "${INPUT_UPDATE_FILE}" -ne "" ]];then
+    echo "GITHUB_SHA: ${GITHUB_SHA}"
     git checkout "${GITHUB_SHA}";
 
     echo "Updating file version ${INPUT_UPDATE_FILE}..."
@@ -56,11 +57,14 @@ if [[ "${INPUT_UPDATE_FILE}" -ne "" ]];then
 
     echo "last_version: ${last_version}"
     echo "new_version: ${new_version}"
-    sed -i 's,${last_version},${new_version},g' ${INPUT_UPDATE_FILE}
-
+    if [[ "${INPUT_UPDATE_SED_REGEX}" -eq "" ]];then
+        sed -i 's,${last_version},${new_version},g' ${INPUT_UPDATE_FILE}
+    else
+        sed -i "${INPUT_UPDATE_SED_REGEX}" __openerp__.py
+    fi
     git add ${INPUT_UPDATE_FILE}
-
     git commit -m "${INPUT_MESSAGE}"
+
     tag_commit=`git rev-parse --verify HEAD`
     echo "tag_commit: ${tag_commit}"
     git tag -a ${next_tag} -m "${INPUT_MESSAGE}" "${tag_commit}" -f

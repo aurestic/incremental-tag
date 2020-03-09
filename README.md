@@ -14,6 +14,7 @@ These are the parameters you can use with the action:
 - `message`: [optional] Message for the tag
 - `prev_tag`: [optional] String to be added before the final tag, for example this parameter takes the value 'v' the final tag will be 'v8.0.15.45'.
 - `update_file`: [optional] Filename to update new version. This options will be a commit.
+- `update_sed_regex`: [optional] Regex to update <<update_file>> version.
 
 ## Usage
 
@@ -41,6 +42,7 @@ jobs:
         message: Bump version
         prev_tag: 'v'
         update_file: '__openerp__.py'
+        update_sed_regex: '__openerp__.py'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```

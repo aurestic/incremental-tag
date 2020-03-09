@@ -26,3 +26,7 @@ inputs:
     description: 'Filename to update new version. This options will be a commit.'
     required: false
     default: ''
+  update_sed_regex:
+    description: 'Regex to update <<update_file>> version.'
+    required: false
+    default: ''
