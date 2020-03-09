@@ -52,6 +52,10 @@ if [[ ${INPUT_UPDATE_ODOO_MODULE_VERSION} ]];then
     git checkout "${GITHUB_SHA}";
 
     for file in '__openerp__.py' '__manifest__.py';do
+        if [ ! -f "${file}" ];then
+            continue
+        fi
+
         echo "Updating file version ${file}..."
         new_version=`echo ${next_tag}|sed "s,^v\(.*\),\1,g"`
 
