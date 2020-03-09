@@ -60,6 +60,7 @@ if [[ "${INPUT_UPDATE_FILE}" -ne "" ]];then
     if [[ "${INPUT_UPDATE_SED_REGEX}" -eq "" ]];then
         sed -i 's,${last_version},${new_version},g' ${INPUT_UPDATE_FILE}
     else
+        echo "INPUT_UPDATE_SED_REGEX: ${INPUT_UPDATE_SED_REGEX}";
         sed -i "${INPUT_UPDATE_SED_REGEX}" __openerp__.py
     fi
     git add ${INPUT_UPDATE_FILE}
