@@ -24,18 +24,18 @@ echo "Updating repository tags..."
 git fetch origin --tags
 
 last_tag=""
+echo "DEBUG INPUT_FLAG_BRANCH: ${INPUT_FLAG_BRANCH}"
+echo "DEBUG INPUT_UPDATE_ODOO_MODULE_VERSION: ${INPUT_UPDATE_ODOO_MODULE_VERSION}"
+
 if [[ $INPUT_FLAG_BRANCH ]];then
     echo "Getting version branch"
     branch=$(git rev-parse --abbrev-ref HEAD)
-    echo "Branch ${branch}"
 
     echo "Getting last tag..."
     last_tag=`git describe --tags $(git rev-list --tags) --always|egrep "${INPUT_PREV_TAG}${branch}\.[0-9]*\.[0-9]*$"|sort -V -r|head -n 1`
-    echo "Last tag is ${last_tag}"
 else
     echo "Getting last tag..."
     last_tag=`git describe --tags $(git rev-list --tags --max-count=1)`
-    echo "Last tag is ${last_tag}"
 fi
 
 
