@@ -24,7 +24,7 @@ echo "Updating repository tags..."
 git fetch origin --tags
 
 last_tag=""
-if [[ "${INPUT_FLAG_BRANCH}" -ne "false" ]];then
+if [ "${INPUT_FLAG_BRANCH}" = true ];then
     echo "Getting version branch"
     branch=$(git rev-parse --abbrev-ref HEAD)
 
@@ -36,18 +36,18 @@ else
 fi
 
 
-if [[ "${last_tag}" == "" ]];then
-    if [[ "${INPUT_FLAG_BRANCH}" -ne "false" ]];then
-        last_tag="${INPUT_PREV_TAG}${branch}.0.0";
+if [ -z "${last_tag}" ];then
+    if [ "${INPUT_FLAG_BRANCH}" != false ];then
+        last_tag="${INPUT_PREV_TAG}${branch}.1.0";
     else
-        last_tag="${INPUT_PREV_TAG}0.0.0";
+        last_tag="${INPUT_PREV_TAG}0.1.0";
     fi
 fi
 
 echo "Getting next tag..."
 next_tag="${last_tag%.*}.$((${last_tag##*.}+1))"
 
-if [[ "${INPUT_UPDATE_ODOO_MODULE_VERSION}" -ne "false" ]];then
+if [ "${INPUT_UPDATE_ODOO_MODULE_VERSION}" != true ];then
     git checkout "${GITHUB_SHA}";
 
     for file in '__openerp__.py' '__manifest__.py';do
@@ -61,8 +61,8 @@ if [[ "${INPUT_UPDATE_ODOO_MODULE_VERSION}" -ne "false" ]];then
         sed -i "s,\(\s*.version.*:\).*,\1 \"${new_version}\"\,,g" ${file}
         git add ${file}
     done
-    git commit -m "${INPUT_MESSAGE}"
 
+    git commit -m "${INPUT_MESSAGE}"
     tag_commit=`git rev-parse --verify HEAD`
     echo "Forcing tag update..."
     git tag ${next_tag}
