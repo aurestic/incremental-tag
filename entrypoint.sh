@@ -28,11 +28,11 @@ if [ "${INPUT_FLAG_BRANCH}" = true ];then
     echo "Getting version branch"
     branch=$(git rev-parse --abbrev-ref HEAD)
 
-    echo "Getting last tag..."
     last_tag=`git describe --tags $(git rev-list --tags) --always|egrep "${INPUT_PREV_TAG}${branch}\.[0-9]*\.[0-9]*$"|sort -V -r|head -n 1`
+    echo "Last tag: <<${last_tag}>>";
 else
-    echo "Getting last tag..."
     last_tag=`git describe --tags $(git rev-list --tags --max-count=1)`
+    echo "Last tag: <<${last_tag}>>";
 fi
 
 
@@ -44,10 +44,12 @@ if [ -z "${last_tag}" ];then
     fi
 fi
 
-echo "Getting next tag..."
 next_tag="${last_tag%.*}.$((${last_tag##*.}+1))"
+echo "Next tag: <<${next_tag}>>";
 
-if [ "${INPUT_UPDATE_ODOO_MODULE_VERSION}" != true ];then
+
+if [ "${INPUT_UPDATE_ODOO_MODULE_VERSION}" = true ];then
+    echo "Upload tag for Odoo module...";
     git checkout "${GITHUB_SHA}";
 
     for file in '__openerp__.py' '__manifest__.py';do
