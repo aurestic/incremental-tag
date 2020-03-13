@@ -17,6 +17,15 @@ EOF
     git config --global user.name "Incremental tag GitHub Action"
 }
 
+echo "###################"
+echo "Tagging Parameters"
+echo "###################"
+echo "flag_branch: <<${INPUT_FLAG_BRANCH}>>"
+echo "message: <<${INPUT_MESSAGE}>>"
+echo "prev_tag: <<${INPUT_PREV_TAG}>>"
+echo "update_odoo_module_version: <<${INPUT_UPDATE_ODOO_MODULE_VERSION}>>"
+echo "###################"
+
 echo "Setting up git machine..."
 git_setup
 
@@ -25,8 +34,8 @@ git fetch origin --tags
 
 last_tag=""
 if [ "${INPUT_FLAG_BRANCH}" = true ];then
-    echo "Getting version branch"
     branch=$(git rev-parse --abbrev-ref HEAD)
+    echo "branch: <<${branch}>>";
 
     last_tag=`git describe --tags $(git rev-list --tags) --always|egrep "${INPUT_PREV_TAG}${branch}\.[0-9]*\.[0-9]*$"|sort -V -r|head -n 1`
     echo "Last tag: <<${last_tag}>>";
@@ -42,6 +51,7 @@ if [ -z "${last_tag}" ];then
     else
         last_tag="${INPUT_PREV_TAG}0.1.0";
     fi
+    echo "Default Last tag: <<${last_tag}>>";
 fi
 
 next_tag="${last_tag%.*}.$((${last_tag##*.}+1))"
