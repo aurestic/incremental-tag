@@ -3,16 +3,6 @@ set -eu
 
 # Set up .netrc file with GitHub credentials
 git_setup ( ) {
-    cat - EOF > $HOME/.netrc
-        machine github.com
-        login $GITHUB_ACTOR
-        password $GITHUB_TOKEN
-        machine api.github.com
-        login $GITHUB_ACTOR
-        password $GITHUB_TOKEN
-EOF
-    chmod 600 $HOME/.netrc
-
     git config --global user.email "actions@github.com"
     git config --global user.name "Incremental tag GitHub Action"
 }
@@ -32,7 +22,7 @@ echo ""
 echo "Start process..."
 
 echo "1) Setting up git machine..."
-# git_setup
+git_setup
 
 echo "2) Updating repository tags..."
 git fetch origin --tags --quiet
