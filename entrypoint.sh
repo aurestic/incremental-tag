@@ -32,7 +32,7 @@ echo ""
 echo "Start process..."
 
 echo "1) Setting up git machine..."
-git_setup
+# git_setup
 
 echo "2) Updating repository tags..."
 git fetch origin --tags --quiet
