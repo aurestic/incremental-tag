@@ -3,7 +3,7 @@ set -eu
 
 # Set up .netrc file with GitHub credentials
 git_setup ( ) {
-  cat - EOF > $HOME/.netrc
+    cat - EOF > $HOME/.netrc
         machine github.com
         login $GITHUB_ACTOR
         password $GITHUB_TOKEN
@@ -24,6 +24,9 @@ echo "flag_branch: ${INPUT_FLAG_BRANCH}"
 echo "message: ${INPUT_MESSAGE}"
 echo "prev_tag: ${INPUT_PREV_TAG}"
 echo "update_odoo_module_version: ${INPUT_UPDATE_ODOO_MODULE_VERSION}"
+echo "GITHUB_ACTOR: ${GITHUB_ACTOR}"
+echo "GITHUB_TOKEN: ${GITHUB_TOKEN}"
+echo "HOME: ${HOME}"
 echo "###################"
 echo ""
 echo "Start process..."
